@@ -7,7 +7,10 @@ async function callAI(system, user) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY is not configured on the server");
 
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  // gemini-2.5-flash was deprecated for new projects (returns 404: "no
+  // longer available to new users"). gemini-3.6-flash is Google's current
+  // free-tier default as of mid-2026.
+  const model = process.env.GEMINI_MODEL || "gemini-3.6-flash";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   const controller = new AbortController();
