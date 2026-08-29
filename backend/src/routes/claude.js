@@ -1,5 +1,5 @@
 const express = require("express");
-const { callAI } = require("../lib/gemini");
+   const { callAI } = require("../lib/groq");
 
 const router = express.Router();
 
