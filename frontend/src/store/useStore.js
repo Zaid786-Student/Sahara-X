@@ -510,7 +510,8 @@ function fallbackSchemeRanking(profile, schemes, recommendations) {
 }
 
 function fallbackRecommendationSet(profile) {
-  const pool = FALLBACK_IDEAS;
+  let pool = FALLBACK_IDEAS.filter((f) => f.estimatedBudget.max >= profile.budget * 0.3 && f.estimatedBudget.min <= profile.budget * 3);
+  if (pool.length < 3) pool = FALLBACK_IDEAS;
   const picks = pool.slice(0, 3).map((f, i) => ({
     ...f,
     id: "idea-" + (i + 1),

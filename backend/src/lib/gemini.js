@@ -11,7 +11,10 @@ async function callAI(system, user) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 20000);
+  // 20s was too tight once maxOutputTokens went up to 8192 — larger JSON
+  // responses genuinely take longer to generate. Raised so a normal (if
+  // slow) response isn't mistaken for a hang.
+  const timer = setTimeout(() => controller.abort(), 55000);
   let res;
   try {
     res = await fetch(url, {
