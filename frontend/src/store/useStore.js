@@ -187,6 +187,7 @@ export const useStore = create((set, get) => ({
   },
 
   setLocation: (val) => set((s) => ({ profile: { ...s.profile, locationType: val } })),
+setExactLocation: (val) => set((s) => ({ profile: { ...s.profile, exactLocation: val } })),
   setExactLocation: (val) => set((s) => ({ profile: { ...s.profile, exactLocation: val } })),
   setLang: (val) => set((s) => ({ profile: { ...s.profile, language: val } })),
   toggleSector: (val) =>
