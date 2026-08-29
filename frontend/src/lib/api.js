@@ -1,7 +1,7 @@
 // Thin fetch wrappers for the Express backend. Replaces the original
 // window.storage.get/set calls and the direct api.anthropic.com fetch.
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8787";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://sahara-x-backend.onrender.com";
 const REQUEST_TIMEOUT_MS = 25000; // Claude generations can take a few seconds —
 // but past this we assume the backend/network is stuck and bail out so the
 // UI can fall back instead of hanging on the loading screen forever.
