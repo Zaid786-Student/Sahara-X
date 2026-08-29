@@ -13,6 +13,7 @@ export default function Onboarding() {
   const p = useStore((s) => s.profile);
   const step = useStore((s) => s.onboardStep);
   const setLocation = useStore((s) => s.setLocation);
+  const setExactLocation = useStore((s) => s.setExactLocation);
   const setBudget = useStore((s) => s.setBudget);
   const toggleSector = useStore((s) => s.toggleSector);
   const clearSectors = useStore((s) => s.clearSectors);
@@ -56,6 +57,19 @@ export default function Onboarding() {
               <div className="t">{label}</div>
             </div>
           ))}
+        </div>
+        <div style={{ marginTop: 20 }}>
+          <label style={{ fontSize: 13, fontWeight: 600, color: "var(--ink-soft)", display: "block", marginBottom: 8 }}>
+            {tt("exact_location_label")}
+          </label>
+          <input
+            type="text"
+            className="text-input"
+            placeholder={tt("exact_location_placeholder")}
+            value={p.exactLocation}
+            onChange={(e) => setExactLocation(e.target.value)}
+          />
+          <p style={{ fontSize: 12.5, color: "var(--ink-soft)", marginTop: 8 }}>{tt("exact_location_note")}</p>
         </div>
       </>
     );

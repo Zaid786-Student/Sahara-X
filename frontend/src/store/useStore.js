@@ -29,7 +29,7 @@ function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
 }
 
-const DEFAULT_PROFILE = { locationType: "", budget: 50000, sectorInterest: [], skills: [], language: "English", name: "" };
+const DEFAULT_PROFILE = { locationType: "", exactLocation: "", budget: 50000, sectorInterest: [], skills: [], language: "English", name: "" };
 
 function getStoredAuth() {
   try {
@@ -187,6 +187,7 @@ export const useStore = create((set, get) => ({
   },
 
   setLocation: (val) => set((s) => ({ profile: { ...s.profile, locationType: val } })),
+  setExactLocation: (val) => set((s) => ({ profile: { ...s.profile, exactLocation: val } })),
   setLang: (val) => set((s) => ({ profile: { ...s.profile, language: val } })),
   toggleSector: (val) =>
     set((s) => {
@@ -314,6 +315,12 @@ export const useStore = create((set, get) => ({
         budgetAnalysis: { availableBudget: profile.budget, estimatedStartupRequirement: top.estimatedBudget.min, note: "AI-estimated based on typical setup costs for this category." },
         riskAnalysis: { overallRisk: "Medium", breakdown: { competition: "Medium", seasonality: "Medium", capitalRisk: "Low", operations: "Medium", supplyChain: "Low", regulatoryRisk: "Low" } },
         marketInsights: { locationContext: `${profile.locationType || "Local"} area context based on your profile.`, targetCustomerGroups: ["Nearby households", "Local small businesses"], demandSignals: "AI-informed assessment — not verified market statistics.", seasonality: "May vary by season depending on the business category.", competition: "Estimated to be moderate based on typical market density.", localConsiderations: "Verify local demand directly before committing capital." },
+        localityAnalysis: {
+          areaName: profile.exactLocation || profile.locationType || "your area",
+          whatsInDemandAroundYou: `Without a more specific location on file, this is a general estimate — typical demand in a ${profile.locationType || "similar"} area centers on everyday household needs, food, and basic services.`,
+          howThisIdeaFitsLocally: `"${top.ideaName}" is a reasonable general fit for a ${profile.locationType || "this type of"} area, but confirm real local demand directly before investing.`,
+          confidence: profile.exactLocation ? "Medium" : "Low",
+        },
         aiVerdict: `"${top.ideaName}" currently appears to be the strongest fit for your budget, skills and location, offering a practical entry point with manageable risk and room to grow.`,
         actionPlan: { next3Actions: ["Validate local demand by speaking to 10 potential customers", "Get an exact quote for setup costs and equipment", "Check current eligibility for relevant government support"], next30Days: "Finalise location, supplies, and any required registrations.", next90Days: "Launch, gather customer feedback, and plan your first expansion step." },
         isFallback: true,
@@ -512,9 +519,11 @@ function fallbackSchemeRanking(profile, schemes, recommendations) {
 function fallbackRecommendationSet(profile) {
   let pool = FALLBACK_IDEAS.filter((f) => f.estimatedBudget.max >= profile.budget * 0.3 && f.estimatedBudget.min <= profile.budget * 3);
   if (pool.length < 3) pool = FALLBACK_IDEAS;
+  const areaLabel = profile.exactLocation || profile.locationType || "your area";
   const picks = pool.slice(0, 3).map((f, i) => ({
     ...f,
     id: "idea-" + (i + 1),
+    localityInsight: `Demand for this type of business around ${areaLabel} typically depends on local footfall and existing competition — worth confirming directly before committing capital.`,
     roadmap: {
       setupSteps: ["Assess local demand", "Arrange initial capital", "Source equipment/supplies"],
       estimatedTimeline: "4–8 weeks",

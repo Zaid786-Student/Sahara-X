@@ -28,7 +28,7 @@ export default function Overview() {
 
       <div className="grid grid-4" style={{ margin: "26px 0" }}>
         <div className="card stat-card"><div className="stat-label"><Icon name="rupee" /> {tt("stat_budget")}</div><div className="stat-value mono">{p.budget ? fmtRupee(p.budget) : "—"}</div></div>
-        <div className="card stat-card"><div className="stat-label"><Icon name="pin" /> {tt("stat_location")}</div><div className="stat-value" style={{ fontFamily: "'Fraunces',serif" }}>{p.locationType || "—"}</div></div>
+        <div className="card stat-card"><div className="stat-label"><Icon name="pin" /> {tt("stat_location")}</div><div className="stat-value" style={{ fontFamily: "'Fraunces',serif" }}>{p.locationType || "—"}</div>{p.exactLocation && <div style={{ fontSize: 11.5, color: "var(--ink-soft)", marginTop: 4 }}>{p.exactLocation}</div>}</div>
         <div className="card stat-card"><div className="stat-label"><Icon name="target" /> {tt("stat_interest")}</div><div className="stat-value" style={{ fontFamily: "'Fraunces',serif", fontSize: 19 }}>{p.sectorInterest[0] || tt("open")}</div></div>
         <div className="card stat-card"><div className="stat-label"><Icon name="scale" /> {tt("stat_profile_fit")}</div><div className="stat-value mono">{overallProfileFit != null ? overallProfileFit + "%" : "—"}</div></div>
       </div>
@@ -87,7 +87,7 @@ export default function Overview() {
 
       <div className="card" style={{ padding: 28 }}>
         <div className="section-label"><Icon name="map" /> {tt("your_journey")}</div>
-        <Journey stages={[tt("stage_discover"), tt("stage_validate"), tt("stage_fund"), tt("stage_launch"), tt("stage_grow")]} activeIdx={hasReco ? 1 : 0} />
+        <Journey stages={["Discover", "Validate", "Fund", "Launch", "Grow"]} activeIdx={hasReco ? 1 : 0} />
       </div>
     </>
   );
