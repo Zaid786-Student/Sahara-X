@@ -510,7 +510,7 @@ function fallbackSchemeRanking(profile, schemes, recommendations) {
 }
 
 function fallbackRecommendationSet(profile) {
-  if (pool.length < 3) pool = FALLBACK_IDEAS;
+  const pool = FALLBACK_IDEAS;
   const picks = pool.slice(0, 3).map((f, i) => ({
     ...f,
     id: "idea-" + (i + 1),
