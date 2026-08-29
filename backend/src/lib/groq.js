@@ -30,7 +30,13 @@ async function callAI(system, user) {
           { role: "system", content: system },
           { role: "user", content: user },
         ],
-        max_tokens: 8192,
+        // Groq's free/on-demand tier caps each request at 8000 tokens
+        // TOTAL (system + user prompt + response). Sahara X's system
+        // prompts run ~2500-3000 tokens, so the response budget has to
+        // leave room for that — 5000 keeps total requests safely under
+        // the 8000 TPM limit. Raise this only if you upgrade to a paid
+        // Groq tier (see console.groq.com/settings/billing).
+        max_tokens: 5000,
         temperature: 0.7,
         response_format: { type: "json_object" },
       }),
