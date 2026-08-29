@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Curated, non-AI-generated government scheme reference data.
+// Seeded from the original SCHEMES array — never written to by the app at runtime.
+model Scheme {
+  id                String   @id
+  name              String
+  purpose           String
+  categories        String[]
+  eligibility       String
+  supportType       String
+  applicationPointer String
+  verification      String
+  createdAt         DateTime @default(now())
+
+  @@map("schemes")
+}
+
+// One row per browser session (no auth in this demo).
+// Mirrors the original window.storage keys: profile, savedIdeas, recommendations, report.
+model Session {
+  id              String   @id @default(uuid())
+  profile         Json     @default("{}")
+  recommendations Json?
+  savedIdeas      Json     @default("[]")
+  report          Json?
+  theme           String   @default("light")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("sessions")
+}
