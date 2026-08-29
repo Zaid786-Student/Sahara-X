@@ -24,7 +24,12 @@ async function callAI(system, user) {
         system_instruction: { parts: [{ text: system }] },
         contents: [{ role: "user", parts: [{ text: user }] }],
         generationConfig: {
-          maxOutputTokens: 2048,
+          // 2048 was too small for the RECO/REPORT JSON shapes (3 full
+          // recommendation objects with roadmap arrays, or full report
+          // sections) — Gemini's output was getting cut off mid-JSON,
+          // producing invalid JSON and this exact "Expected ',' or '}'"
+          // parse error → 502. Raised to give it enough room to finish.
+          maxOutputTokens: 8192,
           responseMimeType: "application/json",
         },
       }),
@@ -45,8 +50,7 @@ async function callAI(system, user) {
   const data = await res.json();
   const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("\n");
   const clean = text.replace(/```json|```/g, "").trim();
-  console.log("GEMINI RAW RESPONSE:", clean);
-return JSON.parse(clean);
+  return JSON.parse(clean);
 }
 
 module.exports = { callAI };
