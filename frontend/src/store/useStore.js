@@ -68,7 +68,7 @@ export const useStore = create((set, get) => ({
   voiceSupported: isSTTSupported(),
   voiceTTSSupported: isTTSSupported(),
   discoverError: null,
-  theme: "dark",
+  theme: "light",
 
   suggestedSchemes: null, // [{id, whyRelevant}] | null (not yet run)
   suggestedSchemesLoading: false,
